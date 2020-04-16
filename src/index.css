@@ -43,3 +43,7 @@ h1:first-child {
 a {
   color: var(--accent-color);
 }
+
+summary {
+  margin-bottom: 12px;
+}

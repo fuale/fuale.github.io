@@ -34,9 +34,7 @@ const Layout = styled.div`
 const GettingStarted = () => (
   <>
     <h2>Установка используя composer</h2>
-    <p>
-      <Code language="bash">$ composer require cekta/di</Code>
-    </p>
+    <Code language="bash">$ composer require cekta/di</Code>
     <h2>Использование</h2>
     <p>Рассмотрим ситуацию:</p>
     <ul>
@@ -48,10 +46,12 @@ const GettingStarted = () => (
         Параметры для подключения к бд будут лежать в config.json для примера.
       </li>
     </ul>
-    <p>/public/index.php - основная точка входа для демонстрации работы</p>
-    <Code language="php">
-      {`
-<?php
+    <details>
+      <summary>
+        /public/index.php - основная точка входа для демонстрации работы
+      </summary>
+      <Code language="php">
+        {`<?php
 
 declare(strict_types=1);
 
@@ -62,15 +62,15 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $container = new MyContainer();
 $auth = $container->get(AuthHandler::class);
-var_dump($auth->handle('test', '12345'));
-`}
-    </Code>
-    <p>
-      /src/MyContainer.php - здесь лежит основная настройка иньекции
-      зависимостей
-    </p>
-    <Code>{`
-<?php
+var_dump($auth->handle('test', '12345'));`}
+      </Code>
+    </details>
+    <details>
+      <summary>
+        /src/MyContainer.php - здесь лежит основная настройка иньекции
+        зависимостей
+      </summary>
+      <Code>{`<?php
 
 declare(strict_types=1);
 
@@ -91,7 +91,40 @@ class MyContainer extends Container
         $providers[] = new Provider\\Autowiring($reflection);
         parent::__construct(...$providers);
     }
-}
-      `}</Code>
+}`}</Code>
+    </details>
+    <details>
+      <summary>/config.json - параметры для подключения к бд</summary>
+      <Code language="json">{`{
+  "dsn": "mysql:dbname=testdb;host=127.0.0.1",
+  "username": "root",
+  "passwd": "1234",
+  "options": {}
+}`}</Code>
+    </details>
+    <p>
+      Если поднять БД, создать таблицу code и вписать туда пользователя test и
+      пароль password_hash(‘12345’, PASSWORD_DEFAULT).
+    </p>
+    <Code language="bash">{`$ php -f public/index.php 
+/public/index.php:13:
+bool(true)`}</Code>
+    <h2>Полезное</h2>
+    <ul>
+      <li>
+        MyContainer может содержать любое число провайдеров. MyContainer хранит
+      </li>
+      <li>
+        основные настройки cekta/di. Расширение функционала и возможностей
+      </li>
+      <li>
+        осуществляются с помощью провайдеров Порядок провайдеров важен, если два
+      </li>
+      <li>
+        провайдера предоставляют контейнер с одинаковыми именами, используется
+        тот что добавлен раньше.
+      </li>
+    </ul>
+    <p>Смотрите другие разделы для знакомства с другими возможностями.</p>
   </>
 )
